@@ -10,9 +10,9 @@
 //   quiz:     label, question, options: [{ letter, text, glass }]  (4 options)
 //   tip:      label, headline, bullets: [string]                    (2-3 bullets)
 //   style:    label, style, rows: [{ name, text }], glass           (Look, Aroma, Flavor, Feel)
-//   waitlist: label, headline, body
+//   waitlist: label, headline, body, showUrl (false hides the foamscore.com pill)
 // Glasses: pilsner, shaker, tulip, weizen, snifter, stange, nonic.
-// Optional on every template: background "amber" (default) or "foam".
+// Optional on every template: background "amber" (default) or "foam"; label "" hides the label pill.
 
 import { createRequire } from "node:module";
 import { readFileSync, mkdirSync } from "node:fs";
@@ -39,6 +39,12 @@ const GLASSES = {
   snifter: "M6 4C4 9 4 14 7 17C9 19 15 19 17 17C20 14 20 9 18 4 M12 19V26 M8 28H16",
   stange: "M8 3H16V28H8Z",
   nonic: "M6 3H18L17.2 9C18 10 18 11 17.2 12L16 29H8L6.8 12C6 11 6 10 6.8 9Z",
+};
+
+// label: a string shows the pill; "" or null hides it (default text applies when the field is absent).
+const pill = (spec, fallback) => {
+  const text = spec.label === undefined ? fallback : spec.label;
+  return text ? `<span class="label">${esc(text)}</span>` : "";
 };
 
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
@@ -98,7 +104,7 @@ const templates = {
         <span style="font-size:42px;font-weight:600;line-height:1.15">${esc(o.text)}</span>
       </div>`).join("");
     return page({ footnote: "Answer in the caption", ...s }, `
-      <span class="label">${esc(s.label ?? "Glass quiz")}</span>
+      ${pill(s, "Glass quiz")}
       <h1 style="font-size:72px">${esc(s.question)}</h1>
       <div style="display:flex;flex-direction:column;gap:18px">${opts}</div>`);
   },
@@ -108,7 +114,7 @@ const templates = {
         <span style="flex:none;margin-top:16px;width:22px;height:22px;border-radius:50%;background:${INK}"></span><span>${esc(b)}</span>
       </li>`).join("");
     return page(s, `
-      <span class="label">${esc(s.label ?? "Tasting tip")}</span>
+      ${pill(s, "Tasting tip")}
       <h1>${esc(s.headline)}</h1>
       <ul style="list-style:none;padding:0;display:flex;flex-direction:column;gap:28px">${items}</ul>`);
   },
@@ -119,7 +125,7 @@ const templates = {
         <span style="font-size:44px;font-weight:600;line-height:1.2">${esc(r.text)}</span>
       </div>`).join("");
     return page(s, `
-      <span class="label">${esc(s.label ?? "Style spotlight")}</span>
+      ${pill(s, "Style spotlight")}
       <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:32px">
         <h1 style="font-size:96px">${esc(s.style)}</h1>
         ${s.glass ? `<span style="flex:none">${glass(s.glass, 170)}</span>` : ""}
@@ -128,10 +134,10 @@ const templates = {
   },
   waitlist(s) {
     return page(s, `
-      <span class="label">${esc(s.label ?? "Coming soon")}</span>
+      ${pill(s, "Coming soon")}
       <h1 style="font-size:92px">${esc(s.headline)}</h1>
       <p style="font-size:46px;line-height:1.25;font-weight:600">${esc(s.body)}</p>
-      <span style="align-self:flex-start;padding:22px 40px;border-radius:999px;background:${INK};color:#F5F5F4;font-size:46px;font-weight:700">foamscore.com</span>`);
+      ${s.showUrl === false ? "" : `<span style="align-self:flex-start;padding:22px 40px;border-radius:999px;background:${INK};color:#F5F5F4;font-size:46px;font-weight:700">foamscore.com</span>`}`);
   },
 };
 
