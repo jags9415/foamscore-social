@@ -1,0 +1,43 @@
+[
+  {
+    "date": "2000-01-01",
+    "slug": "sample-quiz",
+    "template": "quiz",
+    "question": "Which glass suits a Weissbier best?",
+    "options": [
+      { "letter": "A", "text": "Pilsner glass", "glass": "pilsner" },
+      { "letter": "B", "text": "Weizen glass", "glass": "weizen" },
+      { "letter": "C", "text": "Snifter", "glass": "snifter" },
+      { "letter": "D", "text": "Shaker pint", "glass": "shaker" }
+    ]
+  },
+  {
+    "date": "2000-01-01",
+    "slug": "sample-tip",
+    "template": "tip",
+    "label": "Tasting tip",
+    "headline": "Smell before you sip.",
+    "bullets": ["Swirl gently to release aroma.", "Take short sniffs, not one long one.", "Note malt, hops, then yeast."]
+  },
+  {
+    "date": "2000-01-01",
+    "slug": "sample-style",
+    "template": "style",
+    "background": "foam",
+    "style": "Weissbier",
+    "glass": "weizen",
+    "rows": [
+      { "name": "Look", "text": "Hazy straw to gold, tall white head" },
+      { "name": "Aroma", "text": "Banana and clove" },
+      { "name": "Flavor", "text": "Soft wheat, light fruit, low bitterness" },
+      { "name": "Feel", "text": "Fluffy, highly carbonated" }
+    ]
+  },
+  {
+    "date": "2000-01-01",
+    "slug": "sample-waitlist",
+    "template": "waitlist",
+    "headline": "A tutor for every tasting.",
+    "body": "Guided tastings, judging-sheet coaching and answers to your questions."
+  }
+]
